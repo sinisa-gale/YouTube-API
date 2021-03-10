@@ -64,3 +64,17 @@ header .wrapper {
 .video-list img {
 	margin-right: 20px;
 }
+
+iframe {
+	height: 0;
+	margin: 30px auto 0;
+	transition: all 1s ease;
+}
+
+iframe.visible {
+	height: 400px;
+}
+
+main div.wrapper {
+	width: 800px;
+}
