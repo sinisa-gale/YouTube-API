@@ -61,6 +61,11 @@ header .wrapper {
 	box-shadow: 0 0 2px 0 rgba(0,0,0,0.5);
 }
 
+.video-list div p {
+	height: 1rem;
+	overflow: hidden;
+}
+
 .video-list img {
 	margin-right: 20px;
 }

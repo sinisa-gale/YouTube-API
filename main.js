@@ -3,14 +3,27 @@ var videoList = document.querySelector('.video-list');
 var search = document.querySelector('.search input');
 var searchBtn = document.querySelector('.search button');
 var videoView = document.querySelector('iframe');
+var videoId;
 
-function getData() {
-	var url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=' + search.value + '&key=' + key;
+function getData(relatedVideo) {
+	var url;
+	if (relatedVideo) {
+		url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&relatedToVideoId=' + videoId + '&type=video&key=' + key;
+		console.log(url);
+	} else {
+		url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=' + search.value + '&key=' + key;
+	}
 	var req = new XMLHttpRequest();
 	search.value = '';
-	req.open('GET', url);
+	req.open('GET', url, true);
 	req.onload = function() {
-		listVideos(JSON.parse(req.responseText));
+		switch (req.status) {
+			case 200: 
+				listVideos(JSON.parse(req.responseText));
+				break;
+			case 403:
+				alert('Quota excedeed. Try again later.');
+		}		
 	}
 	req.send();
 }
@@ -18,7 +31,7 @@ function getData() {
 function listVideos(arr) {
 	videoList.innerHTML = '';
 	arr.items.forEach(function(item) {
-		createVideo(item);
+		if (item.snippet) {createVideo(item);}
 	})
 }
 
@@ -43,12 +56,14 @@ function createVideo(source) {
 	elementContainer.addEventListener('click', function(){
 		videoView.setAttribute('src', 'https://www.youtube.com/embed/' + source.id.videoId);
 		videoView.classList.add('visible'); 
+		videoId = source.id.videoId;
+		getData(true);
 	})
 	videoList.appendChild(elementContainer);
 }
 
-searchBtn.addEventListener('click', getData);
+searchBtn.addEventListener('click', function() {getData(false)});
 search.addEventListener('keypress', function(e) {
-	if (e.keyCode === 13) {getData()}
+	if (e.keyCode === 13) {getData(false)}
 });
 
