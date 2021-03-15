@@ -8,8 +8,7 @@ var videoId;
 function getData(relatedVideo) {
 	var url;
 	if (relatedVideo) {
-		url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&relatedToVideoId=' + videoId + '&type=video&key=' + key;
-		console.log(url);
+		url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&relatedToVideoId=' + videoId + '&type=video&key=' + key;
 	} else {
 		url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=' + search.value + '&key=' + key;
 	}
